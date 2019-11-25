@@ -1,0 +1,204 @@
+2019-11-25 10:02:34,733:__main__:ERROR:An error occurred while getting story map usage stats:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 62, in <module>
+    usage_stats_df = usage_stats_df.append(getUsageStats(storymap, 14), ignore_index=True)
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 42, in getUsageStats
+    "Month": month_name[month],
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\calendar.py", line 59, in __getitem__
+    funcs = self._months[i]
+IndexError: list index out of range
+2019-11-25 10:15:38,399:__main__:ERROR:isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 37, in isWebApp
+    raise TypeError("isWebApp(item) expects the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+2019-11-25 10:15:38,403:__main__:ERROR:isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 37, in isWebApp
+    raise TypeError("isWebApp(item) expects the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+2019-11-25 10:15:38,404:__main__:ERROR:isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 37, in isWebApp
+    raise TypeError("isWebApp(item) expects the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+2019-11-25 10:15:38,405:__main__:ERROR:isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 37, in isWebApp
+    raise TypeError("isWebApp(item) expects the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+2019-11-25 10:15:38,406:__main__:ERROR:isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 37, in isWebApp
+    raise TypeError("isWebApp(item) expects the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+2019-11-25 10:15:38,407:__main__:ERROR:isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 37, in isWebApp
+    raise TypeError("isWebApp(item) expects the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+2019-11-25 10:15:38,485:__main__:ERROR:isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 37, in isWebApp
+    raise TypeError("isWebApp(item) expects the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+2019-11-25 10:15:38,487:__main__:ERROR:isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 37, in isWebApp
+    raise TypeError("isWebApp(item) expects the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) expects the item to have type = 'arcgis.gis.Item'
+2019-11-25 10:25:08,009:__main__:ERROR:An error occurred while connecting to wake.maps.arcgis.com or finding story map groups:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 61, in <module>
+    storymaps_live = list(filter(isWebApp, storymaps_group.content()))
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 33, in isWebApp
+    if isintrance(item, arcgis.gis.Item):
+NameError: name 'isintrance' is not defined
+2019-11-25 10:25:08,023:__main__:ERROR:An error occurred while getting story map usage stats:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 68, in <module>
+    for storymap in storymaps_live:
+NameError: name 'storymaps_live' is not defined
+2019-11-25 10:26:11,641:__main__:ERROR:An error occurred while connecting to wake.maps.arcgis.com or finding story map groups:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 61, in <module>
+    storymaps_live = list(filter(isWebApp, storymaps_group.content()))
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 33, in isWebApp
+    if isinstance(item, arcgis.gis.Item):
+NameError: name 'arcgis' is not defined
+2019-11-25 10:26:11,655:__main__:ERROR:An error occurred while getting story map usage stats:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 68, in <module>
+    for storymap in storymaps_live:
+NameError: name 'storymaps_live' is not defined
+2019-11-25 10:28:17,068:__main__:ERROR:An error occurred while connecting to wake.maps.arcgis.com or finding story map groups:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 61, in <module>
+    storymaps_live = list(filter(isWebApp, storymaps_group.content()))
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 33, in isWebApp
+    if isinstance(item, GIS.Item):
+AttributeError: type object 'GIS' has no attribute 'Item'
+2019-11-25 10:28:17,082:__main__:ERROR:An error occurred while getting story map usage stats:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 68, in <module>
+    for storymap in storymaps_live:
+NameError: name 'storymaps_live' is not defined
+2019-11-25 13:52:55,074:__main__:ERROR:An error occurred while connecting to wake.maps.arcgis.com or finding story map groups:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 61, in <module>
+    storymaps_live = list(filter(isWebApp, storymaps_group.content()))
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 33, in isWebApp
+    if isinstance(item, Item): # THIS IS NOT WORKING even tough type(item) returns <class 'arcgis.gis.Item'>
+NameError: name 'Item' is not defined
+2019-11-25 13:52:55,090:__main__:ERROR:An error occurred while getting story map usage stats:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 68, in <module>
+    for storymap in storymaps_live:
+NameError: name 'storymaps_live' is not defined
+2019-11-25 14:07:55,493:__main__:ERROR:isWebApp(item) requires the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 37, in isWebApp
+    raise TypeError("isWebApp(item) requires the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) requires the item to have type = 'arcgis.gis.Item'
+2019-11-25 14:24:50,447:__main__:24:INFO:: 
+
+New Run of get_pros_story_map_views.py 
+
+
+2019-11-25 14:24:54,675:__main__:40:ERROR:: isWebApp(item) requires the item to have type = 'arcgis.gis.Item'
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 38, in isWebApp
+    raise TypeError("isWebApp(item) requires the item to have type = 'arcgis.gis.Item'")
+TypeError: isWebApp(item) requires the item to have type = 'arcgis.gis.Item'
+2019-11-25 14:33:08,614:__main__:Line 28:INFO:: New execution of get_pros_story_map_views.py @ 11/25/2019, 14:33:08
+2019-11-25 14:33:13,126:__main__:Line 75:INFO:: Execution complete @ 11/25/2019, 14:33:08
+
+
+2019-11-25 14:34:09,712:__main__:Line 28:INFO:: New execution of get_pros_story_map_views.py @ 11/25/2019, 14:34:09
+2019-11-25 14:34:13,918:__main__:Line 71:INFO:: usage_stats_df:
+                          TourTitle    Month ViewsThisMonth TotalViewsSinceCreation
+0      Green Hills County Park Tour  October             85                     673
+1  Robertson Millpond Preserve Tour  October              8                     242
+2019-11-25 14:34:13,918:__main__:Line 75:INFO:: Execution complete @ 11/25/2019, 14:34:09
+
+
+2019-11-25 14:37:41,079:__main__:Line 28:INFO:: New execution of get_pros_story_map_views.py at 11/25/2019, 14:37:41
+2019-11-25 14:37:43,419:__main__:Line 64:ERROR:: An error occurred while connecting to wake.maps.arcgis.com or finding story map groups:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 62, in <module>
+    storymaps_live = list(filter(isWebApp, storymaps_group.content()))
+AttributeError: 'NoneType' object has no attribute 'content'
+2019-11-25 14:37:43,433:__main__:Line 73:ERROR:: An error occurred while getting story map usage stats:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 69, in <module>
+    for storymap in storymaps_live:
+NameError: name 'storymaps_live' is not defined
+2019-11-25 14:37:43,434:__main__:Line 75:INFO:: Execution complete at 11/25/2019, 14:37:41
+
+
+2019-11-25 14:45:50,184:__main__:Line 24:INFO:: New execution of get_pros_story_map_views.py at 11/25/2019, 14:45:50
+2019-11-25 14:45:54,093:__main__:Line 70:INFO:: Constructed usage_stats_df:
+                          TourTitle    Month ViewsThisMonth TotalViewsSinceCreation
+0      Green Hills County Park Tour  October             85                     673
+1  Robertson Millpond Preserve Tour  October              8                     242
+2019-11-25 14:45:54,093:__main__:Line 74:INFO:: Execution completed at 11/25/2019, 14:45:54
+
+
+2019-11-25 16:40:49,907:__main__:Line 24:INFO:: New execution of get_pros_story_map_views.py at 11/25/2019, 16:40:49
+2019-11-25 16:40:51,454:__main__:Line 72:ERROR:: An error occurred while getting story map usage stats:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 69, in <module>
+    usage_stats_df = usage_stats_df.append(getUsageStats(storymap, last_full_month), ignore_index=True)
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 44, in getUsageStats
+    usage_df = storymap.usage("60D")
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\gis\__init__.py", line 8046, in usage
+    url = "%sportals/%s/usage" % (self._portal.resturl, self._gis.properties.id)
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\_impl\common\_mixins.py", line 81, in __getattr__
+    cls=self.__class__.__name__, name=key
+AttributeError: 'PropertyMap' instance has no attribute 'id'
+2019-11-25 16:40:51,483:__main__:Line 74:INFO:: Execution of get_pros_story_map_views.py completed at 11/25/2019, 16:40:51
+
+
+2019-11-25 16:43:23,736:__main__:Line 24:INFO:: New execution of get_pros_story_map_views.py at 11/25/2019, 16:43:23
+2019-11-25 16:43:25,490:__main__:Line 72:ERROR:: An error occurred while getting story map usage stats:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 69, in <module>
+    usage_stats_df = usage_stats_df.append(getUsageStats(storymap, last_full_month), ignore_index=True)
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 45, in getUsageStats
+    usage_last_full_month_df = usage_df[pd.DatetimeIndex(usage_df["Date"]).month == month]
+TypeError: 'NoneType' object is not subscriptable
+2019-11-25 16:43:25,494:__main__:Line 74:INFO:: Execution of get_pros_story_map_views.py completed at 11/25/2019, 16:43:25
+
+
+2019-11-25 16:50:30,827:__main__:Line 24:INFO:: New execution of get_pros_story_map_views.py at 11/25/2019, 16:50:30
+2019-11-25 16:50:32,113:__main__:Line 63:ERROR:: An error occurred while connecting to wake.maps.arcgis.com or finding story map groups:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 58, in <module>
+    gis = GIS("https://wake.maps.arcgis.com", "Lucas", os.environ.get("AGOL_PASS"))
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\gis\__init__.py", line 334, in __init__
+    raise e
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\gis\__init__.py", line 322, in __init__
+    referer=self._referer)
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\_impl\portalpy.py", line 163, in __init__
+    client_id=client_id)
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\_impl\connection.py", line 308, in __init__
+    self.login(username, password, expiration, client_id)
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\_impl\connection.py", line 559, in login
+    newtoken = self.generate_token(username, password, expiration, client_id)
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\_impl\connection.py", line 424, in generate_token
+    ssl=True, add_token=False)
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\_impl\connection.py", line 1177, in post
+    self._handle_json_error(resp_json['error'], errorcode)
+  File "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\lib\site-packages\arcgis\_impl\connection.py", line 1198, in _handle_json_error
+    raise RuntimeError(errormessage)
+RuntimeError: Unable to generate token.
+Invalid username or password.
+(Error Code: 400)
+2019-11-25 16:50:32,142:__main__:Line 72:ERROR:: An error occurred while getting story map usage stats:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 68, in <module>
+    for storymap in storymaps_live:
+NameError: name 'storymaps_live' is not defined
+2019-11-25 16:50:32,143:__main__:Line 74:INFO:: Execution of get_pros_story_map_views.py completed at 11/25/2019, 16:50:32
+
+
