@@ -72,3 +72,4 @@ except Exception as e:
     logger.exception("An error occurred while getting story map usage stats:")
 
 logger.info("Execution of get_pros_story_map_views.py completed at {0}\n\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
+
