@@ -1,65 +1,122 @@
 from arcgis.gis import GIS, Item
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from calendar import month_name
 import pandas as pd
-import os
+import os, sys
 import traceback
 
 # Logging config
 txtFile = open("C:\\Users\\Lucas.Piedrahita\\OneDrive - Wake County\\LP\\JupyterNotebooks\\story_map_views\\get_pros_story_map_views.txt", "w")
-txtFile.write("New execution of get_pros_story_map_views.py started at {0}\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
+txtFile.write("New execution of get_pros_story_map_views.py started at {0}\n\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
 
 # Define variables
-last_full_month = datetime.now().month - 1
-last_month_column_name = "{0}Views".format(month_name[last_full_month])
+today = datetime.now()
+last_full_month = (today + relativedelta(months=-1)).month
+last_month_column_name = "{0}{1}Views".format(month_name[last_full_month], today.year)
+troubleshoot_email_list = ["Lucas.Piedrahita@wakegov.com", "Benjamin.Strauss@wakegov.com"]
+full_email_list = troubleshoot_email_list.append("Ben.Wittenberg@wakegov.com")
 
 # Define functions
-def isWebApp(item):
-    """ Return True if the ArcGIS item is the type 'Web Mapping Application' """
-    # txtFile.write("isWebApp() input has type: {0}\n".format(type(item)))
-    try:
-        if isinstance(item, Item):
-            return(item.type == "Web Mapping Application")
-        else:
-            raise TypeError("isWebApp(item) requires the item to have type = 'arcgis.gis.Item'")
-    except TypeError:
-        txtFile.write("\nisWebApp(item) requires the item to have type = 'arcgis.gis.Item'\n")
-        traceback.print_exc(file=txtFile)
+def sendEmail(recipient_list, subject, message=""):
+    pass
 
+def connectToWakeGIS(url, username, password):
+    """ Passes arguments to GIS() function while wrapping it in error trapping.
+    Returns the GIS object if if successfully connects to wake.maps.arcgis.com
+     """
+    try:
+        gis = GIS(url, username, password)
+        if "user" not in gis.properties: 
+            # This occurs if GIS() connects ananymously rather than as a user,
+            # and probably means os.environ.get("AGOL_USER") and 
+            # os.environ.get("AGOL_PASS") returned None.
+            raise PermissionError("Logged into {0} anonymously and will therefore not be able to view usage stats of story maps.".format(gis.url))
+    except PermissionError:
+        traceback.print_exc(file=txtFile)
+        txtFile.write("\nScript failed at {0} because necessary access to wake.maps.arcgis.com could not be established.\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
+        txtFile.close() 
+        sendEmail(recipient_list=troubleshoot_email_list, subject="get_pros_story_map_views.py FAILED", message="TxtFile")
+        raise SystemExit
+    except Exception as e:
+        traceback.print_exc(file=txtFile)
+        txtFile.write("\nAn unexpected error occurred while connecting to wake.maps.arcgis.com, causing the script to fail at {1}:\n{0}:\n".format(e, datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
+        txtFile.close()
+        sendEmail(recipient_list=troubleshoot_email_list, subject="get_pros_story_map_views.py FAILED", message="TxtFile")
+        raise SystemExit
+    else:
+        txtFile.write("Connected to {0} as {1}\n\n".format(gis.url, gis.properties["user"]["username"]))
+        return(gis)
+
+def isWebApp(item):
+    """ Return True if the ArcGIS item is the type 'Web Mapping Application', 
+    otherwise return False """
+    # txtFile.write("isWebApp() input has type: {0}\n".format(type(item)))
+    if isinstance(item, Item):
+        return(item.type == "Web Mapping Application")
+    else:
+        return(False)
+
+def getLiveStorymaps(gis, isWebApp):
+    """ Returns the list of story maps that are shared with the PROS Story Map Tours - Live
+     """
+    try:
+        storymaps_group = gis.groups.get("264e862549e24faca0bbc2ca92bc2dec")
+        storymaps_live = list(filter(isWebApp, storymaps_group.content()))
+    except Exception as e:
+        txtFile.write("An unexpected error occurred while retrieving story maps from the PROS Story Map Tours - Live group:\n{0}\n".format(e))
+        traceback.print_exc(file=txtFile)
+    else:
+        return(storymaps_live)
 
 def getUsageStats(storymap, month, last_month_column_name):
-    """ Return object of the title, previous month, views during the pervious month, 
-    and total views since creation for an input of a storymap ArcGIS item """
-    usage_df = storymap.usage("60D")
-    usage_last_full_month_df = usage_df[pd.DatetimeIndex(usage_df["Date"]).month == month]
-    views_last_full_month = usage_last_full_month_df["Usage"].sum()
-    usage_stats = {
-        "TourTitle": storymap.title,
-        "TotalViewsSinceCreation": storymap.numViews,
-        last_month_column_name: views_last_full_month
-        }
-    # txtFile.write("getUsageStats: {0}\n".format(usage_stats))
-    return(usage_stats)
+    """ Return object of the title, total views since creation,  
+    and views during the pervious month, for an input of a Web Mapping 
+    Application ArcGIS item, such as a storymap """
+    # Get last 60 Days of usage stats
+    try:
+        usage_df = storymap.usage("60D")
+    except IndexError:
+        # This occurs for story maps younger than 60 days, where .usage("60D")
+        # throws "IndexError: list index out of range" 
+        views_last_full_month = "Unable to calculate. Please visit https://wake.maps.arcgis.com/home/item.html?id={0}#usage to get usage stats".format(storymap.id)
+    else:
+        # Filter to get only the rows from the last full month
+        usage_last_full_month_df = usage_df[pd.DatetimeIndex(usage_df["Date"]).month == month]
+        views_last_full_month = usage_last_full_month_df["Usage"].sum()
+    finally:
+        usage_stats = {
+            "TourTitle": storymap.title,
+            "TotalViewsSinceCreation": storymap.numViews,last_month_column_name: views_last_full_month
+            }
+        return(usage_stats)
 
-# Connect to AGOL & get list of live PROS story maps
-try:
-    gis = GIS("https://wake.maps.arcgis.com", os.environ.get("AGOL_USER"), os.environ.get("AGOL_PASS"))
-    txtFile.write("Connected to {0}\n".format(gis.url))
-    storymaps_group = gis.groups.get("264e862549e24faca0bbc2ca92bc2dec")
-    storymaps_live = list(filter(isWebApp, storymaps_group.content()))
-except Exception as e:
-    txtFile.write("\nAn error occurred while connecting to wake.maps.arcgis.com or finding story maps:\n")
-    traceback.print_exc(file=txtFile)
+def constructUsageDf(storymaps_live, last_full_month, last_month_column_name, getUsageStats):
+    """ Returns a pandas DataFrame consisting of the usage stats for each live story map.
 
-#Loop through each story map and get its title, views during the last full month, and total views since its creation.
-try:
-    usage_stats_df = pd.DataFrame(columns=["TourTitle", "TotalViewsSinceCreation", last_month_column_name])
-    for storymap in storymaps_live:
-        usage_stats_df = usage_stats_df.append(getUsageStats(storymap, last_full_month, last_month_column_name), ignore_index=True)
-    txtFile.write("Constructed usage_stats_df:\n{0}\n".format(usage_stats_df))
-except Exception as e:
-    txtFile.write("\nAn error occurred while getting story map usage stats:\n")
-    traceback.print_exc(file=txtFile)
+    Loops through each story map in storymaps_live and gets its title, views during the last full month, and total views since its creation. """
+    try:
+        usage_stats_df = pd.DataFrame(columns=["TourTitle", "TotalViewsSinceCreation", last_month_column_name])
+        for storymap in storymaps_live:
+            row = getUsageStats(storymap, last_full_month, last_month_column_name)
+            usage_stats_df = usage_stats_df.append(row, ignore_index=True)
+    except Exception as e:
+        txtFile.write("An unexpected error occurred while getting story map usage stats:\n{0}:\n".format(e))
+        traceback.print_exc(file=txtFile)
+    else:
+        txtFile.write("Constructed usage_stats_df:\n{0}\n".format(usage_stats_df))
+        return(usage_stats_df)
+
+# Run script:
+gis = connectToWakeGIS("https://wake.maps.arcgis.com", os.environ.get("AGOL_USER"), os.environ.get("AGOL_PASS"))
+
+storymaps_live = getLiveStorymaps(gis, isWebApp)
+
+usage_stats_df = constructUsageDf(storymaps_live, last_full_month, last_month_column_name, getUsageStats)
+
+subject = "PROS Story Maps Tours Usage Statistics for {0}, {1}".format(month_name[last_full_month], today.year)
+message = "usage_stats_df"
+sendEmail(recipient_list = full_email_list, subject = subject, message = message)
 
 txtFile.write("\nExecution of get_pros_story_map_views.py completed at {0}\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
 txtFile.close()

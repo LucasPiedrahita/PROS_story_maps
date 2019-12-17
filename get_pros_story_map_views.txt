@@ -1,9 +1,11 @@
-New execution of get_pros_story_map_views.py started at 12/12/2019, 17:07:02
-Connected to https://Wake.maps.arcgis.com
-Constructed usage_stats_df:
-                                     TourTitle TotalViewsSinceCreation NovemberViews
-0                 Green Hills County Park Tour                     704           104
-1  Historic Oak View County Park Property Tour                     417           160
-2             Robertson Millpond Preserve Tour                     255            48
+New execution of get_pros_story_map_views.py started at 12/17/2019, 17:09:22
 
-Execution of get_pros_story_map_views.py completed at 12/12/2019, 17:07:07
+Connected to https://Wake.maps.arcgis.com as Lucas.Piedrahita
+
+Constructed usage_stats_df:
+                                     TourTitle TotalViewsSinceCreation November2019Views
+0                 Green Hills County Park Tour                     709               104
+1  Historic Oak View County Park Property Tour                     429               160
+2             Robertson Millpond Preserve Tour                     255                48
+
+Execution of get_pros_story_map_views.py completed at 12/17/2019, 17:09:28
