@@ -3,7 +3,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from calendar import month_name
 import pandas as pd
-import os, sys
+import os
 import traceback
 
 # Logging config
@@ -11,9 +11,9 @@ txtFile = open("C:\\Users\\Lucas.Piedrahita\\OneDrive - Wake County\\LP\\Jupyter
 txtFile.write("New execution of get_pros_story_map_views.py started at {0}\n\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
 
 # Define variables
-today = datetime.now()
-last_full_month = (today + relativedelta(months=-1)).month
-last_month_column_name = "{0}{1}Views".format(month_name[last_full_month], today.year)
+one_month_ago = datetime.now() + relativedelta(months=-1)
+last_full_month = one_month_ago.month
+last_month_column_name = "{0}{1}Views".format(month_name[last_full_month], one_month_ago.year)
 troubleshoot_email_list = ["Lucas.Piedrahita@wakegov.com", "Benjamin.Strauss@wakegov.com"]
 full_email_list = troubleshoot_email_list.append("Ben.Wittenberg@wakegov.com")
 
@@ -87,25 +87,57 @@ def getUsageStats(storymap, month, last_month_column_name):
     finally:
         usage_stats = {
             "TourTitle": storymap.title,
+            "TourId": storymap.id,
             "TotalViewsSinceCreation": storymap.numViews,last_month_column_name: views_last_full_month
             }
         return(usage_stats)
+
+def verifyConstructedDf(usage_stats_df, last_month_column_name):
+    """ Return a list of [True, why_it_succeeded] if the constructed usage stats 
+    DataFrame looks to have been built correctly, otherwise return a list of 
+    [False, why_it_failed]. """
+    rows = usage_stats_df.shape[0]
+    if rows < 1:
+        result = False
+        msg = "The usage_stats_df FAILED VERIFICATION because it is empty."
+    else:
+        failed_usage_stats_df = usage_stats_df[pd.to_numeric(usage_stats_df[last_month_column_name], errors='coerce').isnull()]
+        failed_usage_stats_num = failed_usage_stats_df.shape[0]
+        all_failed = failed_usage_stats_num == rows
+        if all_failed:
+            result = False
+            msg = "The usage_stats_df FAILED VERIFICATION because none of the usage states could be calculated for the column, {}.".format(last_month_column_name)
+        else:
+            result = True
+            msg = "The usage_stats_df was successfully verified to contain records and have at least one successfully calculated value for the {} column.".format(last_month_column_name)
+    return([result, msg])
 
 def constructUsageDf(storymaps_live, last_full_month, last_month_column_name, getUsageStats):
     """ Returns a pandas DataFrame consisting of the usage stats for each live story map.
 
     Loops through each story map in storymaps_live and gets its title, views during the last full month, and total views since its creation. """
     try:
-        usage_stats_df = pd.DataFrame(columns=["TourTitle", "TotalViewsSinceCreation", last_month_column_name])
+        usage_stats_df = pd.DataFrame(columns=["TourTitle", "TourId", "TotalViewsSinceCreation", last_month_column_name])
         for storymap in storymaps_live:
             row = getUsageStats(storymap, last_full_month, last_month_column_name)
             usage_stats_df = usage_stats_df.append(row, ignore_index=True)
     except Exception as e:
-        txtFile.write("An unexpected error occurred while getting story map usage stats:\n{0}:\n".format(e))
+        txtFile.write("An unexpected error occurred while constructing the usage stats dtaframe:\n{0}:\n".format(e))
         traceback.print_exc(file=txtFile)
+        txtFile.write("This caused the script to fail at {2}.\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
+        txtFile.close()
+        sendEmail(recipient_list=troubleshoot_email_list, subject="get_pros_story_map_views.py FAILED", message="TxtFile")
+        raise SystemExit
     else:
-        txtFile.write("Constructed usage_stats_df:\n{0}\n".format(usage_stats_df))
-        return(usage_stats_df)
+        verified, verification_msg = verifyConstructedDf(usage_stats_df, last_month_column_name)
+        if verified:
+            txtFile.write("{0}\n{1}\n".format(verification_msg, usage_stats_df))
+            return(usage_stats_df)
+        else:
+            txtFile.write("{0}\n{1}\n\nThe script failed at {2} because the usage_stats_df DataFrame could not be verified.\n".format(verification_msg, usage_stats_df, datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
+            txtFile.close()
+            sendEmail(recipient_list=troubleshoot_email_list, subject="get_pros_story_map_views.py FAILED", message="TxtFile")
+            raise SystemExit
 
 # Run script:
 gis = connectToWakeGIS("https://wake.maps.arcgis.com", os.environ.get("AGOL_USER"), os.environ.get("AGOL_PASS"))
@@ -114,9 +146,11 @@ storymaps_live = getLiveStorymaps(gis, isWebApp)
 
 usage_stats_df = constructUsageDf(storymaps_live, last_full_month, last_month_column_name, getUsageStats)
 
-subject = "PROS Story Maps Tours Usage Statistics for {0}, {1}".format(month_name[last_full_month], today.year)
-message = "usage_stats_df"
+subject = "PROS Story Maps Tours Usage Statistics for {0}, {1}".format(month_name[last_full_month], one_month_ago.year)
+usage_stats_df_without_id = usage_stats_df.drop("TourId", axis=1)
+message = "usage_stats_df_without_id"
 sendEmail(recipient_list = full_email_list, subject = subject, message = message)
 
+# Finish logging:
 txtFile.write("\nExecution of get_pros_story_map_views.py completed at {0}\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
 txtFile.close()
