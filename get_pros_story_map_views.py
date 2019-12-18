@@ -23,7 +23,7 @@ def sendEmail(recipient_list, subject, message=""):
 
 def connectToWakeGIS(url, username, password):
     """ Passes arguments to GIS() function while wrapping it in error trapping.
-    Returns the GIS object if if successfully connects to wake.maps.arcgis.com
+    Returns the GIS object if it successfully connects to wake.maps.arcgis.com
      """
     try:
         gis = GIS(url, username, password)
@@ -79,7 +79,7 @@ def getUsageStats(storymap, month, last_month_column_name):
     except IndexError:
         # This occurs for story maps younger than 60 days, where .usage("60D")
         # throws "IndexError: list index out of range" 
-        views_last_full_month = "Unable to calculate. Please visit https://wake.maps.arcgis.com/home/item.html?id={0}#usage to get usage stats".format(storymap.id)
+        views_last_full_month = "Storymap too young. Please visit https://wake.maps.arcgis.com/home/item.html?id={0}#usage to get usage stats".format(storymap.id)
     else:
         # Filter to get only the rows from the last full month
         usage_last_full_month_df = usage_df[pd.DatetimeIndex(usage_df["Date"]).month == month]
