@@ -1,11 +1,27 @@
-New execution of get_pros_story_map_views.py started at 12/19/2019, 09:47:17
+New execution of get_pros_story_map_views.py started at 12/19/2019, 14:42:14
+
+Connected to https://Wake.maps.arcgis.com as Lucas.Piedrahita
 
 Story maps retrieved from the PROS Story Map Tours - Live group
 
-The usage_stats_df was successfully verified to contain records and have at least one successfully calculated value for the November2019Views column:
-                                     TourTitle                            TourId TotalViewsSinceCreation November2019Views
-0                 Green Hills County Park Tour  f9d4e2bc45cd463f8a61ef5c30853d71                     709               104
-1  Historic Oak View County Park Property Tour  43720eae5c804486a0dcb11ab6c1d389                     430               160
-2             Robertson Millpond Preserve Tour  d2aa8ba8c7b2401cba27319b6f57347c                     256                48
 
-Execution of get_pros_story_map_views.py completed at 12/19/2019, 09:47:23
+Script failed unexpectedly at 12/19/2019, 14:42:19:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 101, in <module>
+    num_storymaps_failed = usage_stats_df_failed.shape[0][999]
+TypeError: 'int' object is not subscriptable
+
+
+EMAIL SENT:
+To: Lucas.Piedrahita@wakegov.com, Benjamin.Strauss@wakegov.com
+Subject: Script get_pros_story_map_views.py failed
+Body:
+
+Script failed unexpectedly at 12/19/2019, 14:42:19:
+Traceback (most recent call last):
+  File "c:/Users/Lucas.Piedrahita/OneDrive - Wake County/LP/JupyterNotebooks/story_map_views/get_pros_story_map_views.py", line 101, in <module>
+    num_storymaps_failed = usage_stats_df_failed.shape[0][999]
+TypeError: 'int' object is not subscriptable
+
+
+End of EMAIL SENT.
