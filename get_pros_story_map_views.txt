@@ -1,9 +1,11 @@
-New execution of get_pros_story_map_views.py started at 12/18/2019, 17:08:36
+New execution of get_pros_story_map_views.py started at 12/19/2019, 09:47:17
 
-The usage_stats_df was successfully verified to contain records and have at least one successfully calculated value for the November2019Views column.
+Story maps retrieved from the PROS Story Map Tours - Live group
+
+The usage_stats_df was successfully verified to contain records and have at least one successfully calculated value for the November2019Views column:
                                      TourTitle                            TourId TotalViewsSinceCreation November2019Views
 0                 Green Hills County Park Tour  f9d4e2bc45cd463f8a61ef5c30853d71                     709               104
 1  Historic Oak View County Park Property Tour  43720eae5c804486a0dcb11ab6c1d389                     430               160
 2             Robertson Millpond Preserve Tour  d2aa8ba8c7b2401cba27319b6f57347c                     256                48
 
-Execution of get_pros_story_map_views.py completed at 12/18/2019, 17:08:42
+Execution of get_pros_story_map_views.py completed at 12/19/2019, 09:47:23

@@ -1,6 +1,5 @@
-from arcgis.gis import GIS, Item
+from arcgis.gis import GIS
 from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
 import pandas as pd
 import os
 import traceback
@@ -42,12 +41,13 @@ def getLiveStorymaps(gis):
      """
     try:
         storymaps_group = gis.groups.get("264e862549e24faca0bbc2ca92bc2dec")
-        # Filter content in group to only get web mapping apps and not maps & feature layers
+        # Filter content in group to only get story maps and not maps & feature layers
         storymaps_live = list(filter(lambda item: (item.type == "Web Mapping Application"), storymaps_group.content()))
     except Exception as e:
         txtFile.write("An unexpected error occurred while retrieving story maps from the PROS Story Map Tours - Live group:\n{0}\n".format(e))
         traceback.print_exc(file=txtFile)
     else:
+        txtFile.write("Story maps retrieved from the PROS Story Map Tours - Live group\n\n")
         return(storymaps_live)
 
 def getUsageStats(storymap, month, last_month_column_name):
@@ -60,7 +60,7 @@ def getUsageStats(storymap, month, last_month_column_name):
     except IndexError:
         # This occurs for story maps younger than 60 days, where .usage("60D")
         # throws "IndexError: list index out of range" 
-        views_last_full_month = "Storymap too young. Please visit https://wake.maps.arcgis.com/home/item.html?id={0}#usage to get usage stats".format(storymap.id)
+        views_last_full_month = "Storymap too young. Please visit https://wake.maps.arcgis.com/home/item.html?id={0}#usage to get usage stats manually".format(storymap.id)
     else:
         # Filter to get only the rows from the last full month
         usage_last_full_month_df = usage_df[pd.DatetimeIndex(usage_df["Date"]).month == month]
@@ -80,17 +80,17 @@ def verifyConstructedDf(usage_stats_df, last_month_column_name):
     rows = usage_stats_df.shape[0]
     if rows < 1:
         result = False
-        msg = "The usage_stats_df FAILED VERIFICATION because it is empty."
+        msg = "Error: The usage_stats_df FAILED VERIFICATION because it is empty."
     else:
         failed_usage_stats_df = usage_stats_df[pd.to_numeric(usage_stats_df[last_month_column_name], errors='coerce').isnull()]
         failed_usage_stats_num = failed_usage_stats_df.shape[0]
         all_failed = failed_usage_stats_num == rows
         if all_failed:
             result = False
-            msg = "The usage_stats_df FAILED VERIFICATION because none of the usage states could be calculated for the column, {}.".format(last_month_column_name)
+            msg = "Error: The usage_stats_df FAILED VERIFICATION because none of the usage states could be calculated for the column, {}.".format(last_month_column_name)
         else:
             result = True
-            msg = "The usage_stats_df was successfully verified to contain records and have at least one successfully calculated value for the {} column.".format(last_month_column_name)
+            msg = "The usage_stats_df was successfully verified to contain records and have at least one successfully calculated value for the {} column:".format(last_month_column_name)
     return([result, msg])
 
 def constructUsageDf(storymaps_live, last_full_month, last_month_column_name, getUsageStats):
@@ -130,7 +130,7 @@ usage_stats_df = constructUsageDf(storymaps_live, last_full_month, last_month_co
 subject = "PROS Story Maps Tours Usage Statistics for {0}".format(last_day_of_last_month.strftime("%B, %Y"))
 usage_stats_df_without_id = usage_stats_df.drop("TourId", axis=1)
 message = "usage_stats_df_without_id"
-sendEmail(recipient_list = full_email_list, subject = subject, body = message)
+sendEmail(full_email_list, subject, message)
 
 # Finish logging:
 txtFile.write("\nExecution of get_pros_story_map_views.py completed at {0}\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
