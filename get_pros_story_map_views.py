@@ -14,6 +14,8 @@ txtFile.write("New execution of get_pros_story_map_views.py started at {0}\n\n".
 # Define variables
 last_day_of_last_month = datetime.now().replace(day=1) - timedelta(days=1)
 last_month_column_name = "{0}Views".format(last_day_of_last_month.strftime("%B%Y"))
+AGOL_USER = os.environ.get("AGOL_USER")
+AGOL_PASS = os.environ.get("AGOL_PASS")
 from_address = "no.reply@wakegov.com"
 troubleshoot_email_list = ["Lucas.Piedrahita@wakegov.com", "Benjamin.Strauss@wakegov.com"]
 full_email_list = ["Lucas.Piedrahita@wakegov.com", "Benjamin.Strauss@wakegov.com", "Ben.Wittenberg@wakegov.com"]
@@ -26,12 +28,11 @@ def logMsg(message):
     txtFile.write(message)
 
 def sendEmail(recipient_list, subject, body):
-    logMsg("\nEMAIL SENT:\nTo: {0}\nSubject: {1}\nBody:\n{2}\nEnd of EMAIL SENT.\n".format(", ".join(recipient_list), subject, body))
+    logMsg("\nEMAIL SENT:\n'''\nTo: {0}\nSubject: {1}\nBody:\n{2}\n'''\nEnd of EMAIL SENT.\n".format(", ".join(recipient_list), subject, body))
     # msg["Subject"] = subject
     # msg["To"] = ", ".join(recipient_list)
     # msg.attach(MIMText(body, 'plain'))
     # emailbody = msg.as_string()
-    
     # emailserver = stmplib.SMTP("smtprelay.wakegov.com")
     # emailserver.sendmail(from_address, ", ".join(recipient_list), emailbody)
     # emailserver.quit()
@@ -66,7 +67,7 @@ def getUsageStats(storymap):
 try:
     try:
         # Connect to GIS
-        gis = GIS("https://wake.maps.arcgis.com", os.environ.get("AGOL_USER"), os.environ.get("AGOL_PASS"))
+        gis = GIS("https://wake.maps.arcgis.com", AGOL_USER, AGOL_PASS)
         logMsg("Connected to {0} as {1}\n\n".format(gis.url, gis.properties["user"]["username"]))
     except:
         logError("ERROR occurred while connecting to wake.maps.arcgis.com:\n{0}\n".format(traceback.format_exc()))
