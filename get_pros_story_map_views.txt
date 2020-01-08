@@ -1,4 +1,4 @@
-New execution of get_pros_story_map_views.py started at 01/08/2020, 10:13:49
+New execution of get_pros_story_map_views.py started at 01/08/2020, 17:16:50
 
 Connected to https://Wake.maps.arcgis.com as Lucas.Piedrahita
 
@@ -7,7 +7,7 @@ Story maps retrieved from the PROS Story Map Tours - Live group
 The usage_stats_df was verified to contain records and have at least one successfully retrieved value for the December2019Views column:
                                      TourTitle                            TourId TotalViewsSinceCreation December2019Views
 0                 Green Hills County Park Tour  f9d4e2bc45cd463f8a61ef5c30853d71                     753                53
-1  Historic Oak View County Park Property Tour  43720eae5c804486a0dcb11ab6c1d389                     457                57
+1  Historic Oak View County Park Property Tour  43720eae5c804486a0dcb11ab6c1d389                     458                57
 2             Robertson Millpond Preserve Tour  d2aa8ba8c7b2401cba27319b6f57347c                     272                22
 
 EMAIL SENT:
@@ -15,17 +15,46 @@ EMAIL SENT:
 To: Lucas.Piedrahita@wakegov.com, Benjamin.Strauss@wakegov.com, Ben.Wittenberg@wakegov.com
 Subject: PROS Story Map Tours Usage for December, 2019
 Body:
-The monthly PROS story map tours usage report for December, 2019 can be seen below:
-
-                                     TourTitle TotalViewsSinceCreation December2019Views
-0                 Green Hills County Park Tour                     753                53
-1  Historic Oak View County Park Property Tour                     457                57
-2             Robertson Millpond Preserve Tour                     272                22
-
-This is an automated email. Do not reply directly. If you have questions about this email or report, please email Lucas.Piedrahita@wakegov.com or Benjamin.Strauss@wakegov.com.
-
-
+                        <html>
+                        <head></head>
+                        <body>
+                            <p>The monthly PROS story map tours usage report for December, 2019 can be seen below:<br>
+                            <br>
+                            <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>TourTitle</th>
+      <th>TotalViewsSinceCreation</th>
+      <th>December2019Views</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Green Hills County Park Tour</td>
+      <td>753</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <td>Historic Oak View County Park Property Tour</td>
+      <td>458</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>Robertson Millpond Preserve Tour</td>
+      <td>272</td>
+      <td>22</td>
+    </tr>
+  </tbody>
+</table><br>
+                            <br>
+                            
+                            This is an automated email. Do not reply directly. If you have questions about this email or report, please email Lucas.Piedrahita@wakegov.com or Benjamin.Strauss@wakegov.com.<br>
+                            <br>
+                            </p>
+                        </body>
+                        </html>
+                        
 '''
 End of EMAIL SENT.
 
-Execution of get_pros_story_map_views.py completed at 01/08/2020, 10:13:55
+Execution of get_pros_story_map_views.py completed at 01/08/2020, 17:16:56

@@ -27,19 +27,19 @@ def logMsg(message):
     print(message, end="")
     txtFile.write(message)
 
-def sendEmail(recipient_list, subject, body):
+def sendEmail(recipient_list, subject, body, text_type):
     logMsg("\nEMAIL SENT:\n'''\nTo: {0}\nSubject: {1}\nBody:\n{2}\n'''\nEnd of EMAIL SENT.\n".format(", ".join(recipient_list), subject, body))
     # msg["Subject"] = subject
     # msg["To"] = ", ".join(recipient_list)
-    # msg.attach(MIMText(body, 'plain'))
+    # msg.attach(MIMEText(body, text_type))
     # emailbody = msg.as_string()
-    # emailserver = stmplib.SMTP("smtprelay.wakegov.com")
+    # emailserver = smtplib.SMTP("smtprelay.wakegov.com")
     # emailserver.sendmail(from_address, ", ".join(recipient_list), emailbody)
     # emailserver.quit()
 
 def logError(message):
     logMsg(message)
-    sendEmail(troubleshoot_email_list, "Script get_pros_story_map_views.py failed", message)
+    sendEmail(troubleshoot_email_list, "Script get_pros_story_map_views.py failed", message, 'plain')
 
 def getUsageStats(storymap):
     """ Return object of the title, id, total views since creation,  
@@ -109,11 +109,26 @@ try:
                         subject = "PROS Story Map Tours Usage for {0}".format(last_day_of_last_month.strftime("%B, %Y"))
                         if some_failed:
                             # Include sentence about manually checking usage
-                            message = "The monthly PROS story map tours usage report for {0} can be seen below:\n\n{1}\n\nIf your tour is younger than 60-days-old, please email Ben Wittenberg (Ben.Wittenberg@wakegov.com) or Lucas Piedrahita (Lucas.Piedrahita@wakegov.com) and ask that they retrieve the usage stats manually.\n\nThis is an automated email. Do not reply directly. If you have questions about this email or report, please email {2}.\n\n".format(last_day_of_last_month.strftime("%B, %Y"), usage_stats_df_without_id, " or ".join(troubleshoot_email_list))
+                            manual_check_sentence = "If your tour is younger than 60-days-old, please email Ben Wittenberg (Ben.Wittenberg@wakegov.com) or Lucas Piedrahita (Lucas.Piedrahita@wakegov.com) and ask that they retrieve the usage stats manually.<br><br>"
                         else:
                             # Don't include sentence about manually checking usage
-                            message = "The monthly PROS story map tours usage report for {0} can be seen below:\n\n{1}\n\nThis is an automated email. Do not reply directly. If you have questions about this email or report, please email {2}.\n\n".format(last_day_of_last_month.strftime("%B, %Y"), usage_stats_df_without_id, " or ".join(troubleshoot_email_list))
-                        sendEmail(full_email_list, subject, message)
+                            manual_check_sentence = ""
+                        message = """\
+                        <html>
+                        <head></head>
+                        <body>
+                            <p>The monthly PROS story map tours usage report for {0} can be seen below:<br>
+                            <br>
+                            {1}<br>
+                            <br>
+                            {2}
+                            This is an automated email. Do not reply directly. If you have questions about this email or report, please email {3}.<br>
+                            <br>
+                            </p>
+                        </body>
+                        </html>
+                        """.format(last_day_of_last_month.strftime("%B, %Y"), usage_stats_df_without_id.to_html(index=False), manual_check_sentence, " or ".join(troubleshoot_email_list))
+                        sendEmail(full_email_list, subject, message, "html")
 except:
     # If an unexpected/uncaught error is thrown
     logError("\nScript failed unexpectedly at {0}:\n{1}\n".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), traceback.format_exc()))
