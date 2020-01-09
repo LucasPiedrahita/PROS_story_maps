@@ -13,12 +13,13 @@ txtFile.write("New execution of get_pros_story_map_views.py started at {0}\n\n".
 
 # Define variables
 last_day_of_last_month = datetime.now().replace(day=1) - timedelta(days=1)
-last_month_column_name = "{0}Views".format(last_day_of_last_month.strftime("%B%Y"))
+last_month_column_name = "{0} Views".format(last_day_of_last_month.strftime("%B %Y"))
 AGOL_USER = os.environ.get("AGOL_USER")
 AGOL_PASS = os.environ.get("AGOL_PASS")
+storymap_group_id = "264e862549e24faca0bbc2ca92bc2dec"
 from_address = "no.reply@wakegov.com"
-troubleshoot_email_list = ["Lucas.Piedrahita@wakegov.com", "Benjamin.Strauss@wakegov.com"]
-full_email_list = ["Lucas.Piedrahita@wakegov.com", "Benjamin.Strauss@wakegov.com", "Ben.Wittenberg@wakegov.com"]
+troubleshoot_email_list = ["Lucas.Piedrahita@wakegov.com"]
+full_email_list = ["Lucas.Piedrahita@wakegov.com"]
 msg = MIMEMultipart()
 msg["From"] = from_address
 
@@ -29,21 +30,21 @@ def logMsg(message):
 
 def sendEmail(recipient_list, subject, body, text_type):
     logMsg("\nEMAIL SENT:\n'''\nTo: {0}\nSubject: {1}\nBody:\n{2}\n'''\nEnd of EMAIL SENT.\n".format(", ".join(recipient_list), subject, body))
-    # msg["Subject"] = subject
-    # msg["To"] = ", ".join(recipient_list)
-    # msg.attach(MIMEText(body, text_type))
-    # emailbody = msg.as_string()
+    msg["Subject"] = subject
+    msg["To"] = ", ".join(recipient_list)
+    msg.attach(MIMEText(body, text_type))
+    emailbody = msg.as_string()
     # emailserver = smtplib.SMTP("smtprelay.wakegov.com")
     # emailserver.sendmail(from_address, ", ".join(recipient_list), emailbody)
     # emailserver.quit()
 
 def logError(message):
     logMsg(message)
-    sendEmail(troubleshoot_email_list, "Script get_pros_story_map_views.py failed", message, 'plain')
+    sendEmail(troubleshoot_email_list, "Script get_pros_story_map_views.py failed", message, "plain")
 
 def getUsageStats(storymap):
     """ Return object of the title, id, total views since creation,  
-    and views during the pervious month, for an input of a Web Mapping 
+    and views during the previous month, for an input of a Web Mapping 
     Application ArcGIS item, such as a storymap """
     try:
         usage_df = storymap.usage("60D")
@@ -56,9 +57,9 @@ def getUsageStats(storymap):
         views_last_full_month = usage_last_full_month_df["Usage"].sum()
     finally:
         usage_stats = {
-            "TourTitle": storymap.title,
-            "TourId": storymap.id,
-            "TotalViewsSinceCreation": storymap.numViews,
+            "Tour Title": storymap.title,
+            "Tour ID": storymap.id,
+            "Total Views Since Creation": storymap.numViews,
             last_month_column_name: views_last_full_month
             }
         return(usage_stats)
@@ -74,7 +75,7 @@ try:
     else:
         try:
             # Get storymaps from group
-            storymaps_group = gis.groups.get("264e862549e24faca0bbc2ca92bc2dec")
+            storymaps_group = gis.groups.get(storymap_group_id)
             # Filter content in group to only get story maps and not maps & feature layers
             storymaps = list(filter(lambda item: (item.type == "Web Mapping Application"), storymaps_group.content()))
             logMsg("Story maps retrieved from the PROS Story Map Tours - Live group\n\n")
@@ -83,7 +84,7 @@ try:
         else:
             try:
                 # Construct usage stats dataframe
-                usage_stats_df = pd.DataFrame(columns=["TourTitle", "TourId", "TotalViewsSinceCreation", last_month_column_name])
+                usage_stats_df = pd.DataFrame(columns=["Tour Title", "Tour ID", "Total Views Since Creation", last_month_column_name])
                 for storymap in storymaps:
                     row = getUsageStats(storymap)
                     usage_stats_df = usage_stats_df.append(row, ignore_index=True)
@@ -105,29 +106,48 @@ try:
                     else:
                         # Send email to full email list
                         logMsg("The usage_stats_df was verified to contain records and have at least one successfully retrieved value for the {0} column:\n{1}\n".format(last_month_column_name, usage_stats_df))
-                        usage_stats_df_without_id = usage_stats_df.drop("TourId", axis=1)                    
                         subject = "PROS Story Map Tours Usage for {0}".format(last_day_of_last_month.strftime("%B, %Y"))
+                        usage_stats_df_formatted = usage_stats_df.drop("Tour ID", axis=1).to_html(index=False)                   
+                        style = """table {
+                        border: 1px solid #1C6EA4 !important;
+                        width: 620px;
+                        border-collapse: collapse;
+                        }
+                        table td, table th {
+                        border: 1px solid #AAAAAA;
+                        padding: 3px 3px;
+                        }
+                        table thead th {
+                        font-weight: bold;
+                        background: #458DBA;
+                        color: #FFFFFF;
+                        border-left: 2px solid #D0E4F5;
+                        }
+                        """
+                        manual_check_sentence = ""
                         if some_failed:
-                            # Include sentence about manually checking usage
+                            # Include sentence about manually checking usage if some failed to be retrieved
                             manual_check_sentence = "If your tour is younger than 60-days-old, please email Ben Wittenberg (Ben.Wittenberg@wakegov.com) or Lucas Piedrahita (Lucas.Piedrahita@wakegov.com) and ask that they retrieve the usage stats manually.<br><br>"
-                        else:
-                            # Don't include sentence about manually checking usage
-                            manual_check_sentence = ""
                         message = """\
                         <html>
-                        <head></head>
+                        <head>
+                        <style>
+                        {0}
+                        </style>
+                        </head>
                         <body>
-                            <p>The monthly PROS story map tours usage report for {0} can be seen below:<br>
-                            <br>
-                            {1}<br>
+                            <p>The monthly PROS story map tours usage report for {1} can be seen below:<br>
                             <br>
                             {2}
-                            This is an automated email. Do not reply directly. If you have questions about this email or report, please email {3}.<br>
+                            <br>
+                            {3}
+                            This is an automated email. Do not reply directly. If you have questions about this email or report, please email {4}.<br>
                             <br>
                             </p>
                         </body>
                         </html>
-                        """.format(last_day_of_last_month.strftime("%B, %Y"), usage_stats_df_without_id.to_html(index=False), manual_check_sentence, " or ".join(troubleshoot_email_list))
+                        """.format(style, last_day_of_last_month.strftime("%B, %Y"), usage_stats_df_formatted, manual_check_sentence, " or ".join(troubleshoot_email_list))
+                        
                         sendEmail(full_email_list, subject, message, "html")
 except:
     # If an unexpected/uncaught error is thrown

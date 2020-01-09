@@ -1,42 +1,61 @@
-New execution of get_pros_story_map_views.py started at 01/08/2020, 17:16:50
+New execution of get_pros_story_map_views.py started at 01/09/2020, 10:49:20
 
 Connected to https://Wake.maps.arcgis.com as Lucas.Piedrahita
 
 Story maps retrieved from the PROS Story Map Tours - Live group
 
-The usage_stats_df was verified to contain records and have at least one successfully retrieved value for the December2019Views column:
-                                     TourTitle                            TourId TotalViewsSinceCreation December2019Views
-0                 Green Hills County Park Tour  f9d4e2bc45cd463f8a61ef5c30853d71                     753                53
-1  Historic Oak View County Park Property Tour  43720eae5c804486a0dcb11ab6c1d389                     458                57
-2             Robertson Millpond Preserve Tour  d2aa8ba8c7b2401cba27319b6f57347c                     272                22
+The usage_stats_df was verified to contain records and have at least one successfully retrieved value for the December 2019 Views column:
+                                    Tour Title                           Tour ID Total Views Since Creation December 2019 Views
+0                 Green Hills County Park Tour  f9d4e2bc45cd463f8a61ef5c30853d71                        754                  53
+1  Historic Oak View County Park Property Tour  43720eae5c804486a0dcb11ab6c1d389                        459                  57
+2             Robertson Millpond Preserve Tour  d2aa8ba8c7b2401cba27319b6f57347c                        272                  22
 
 EMAIL SENT:
 '''
-To: Lucas.Piedrahita@wakegov.com, Benjamin.Strauss@wakegov.com, Ben.Wittenberg@wakegov.com
+To: Lucas.Piedrahita@wakegov.com
 Subject: PROS Story Map Tours Usage for December, 2019
 Body:
                         <html>
-                        <head></head>
+                        <head>
+                        <style>
+                        table {
+                        border: 1px solid #1C6EA4 !important;
+                        width: 620px;
+                        border-collapse: collapse;
+                        }
+                        table td, table th {
+                        border: 1px solid #AAAAAA;
+                        padding: 3px 3px;
+                        }
+                        table thead th {
+                        font-weight: bold;
+                        background: #458DBA;
+                        color: #FFFFFF;
+                        border-left: 2px solid #D0E4F5;
+                        }
+                        
+                        </style>
+                        </head>
                         <body>
                             <p>The monthly PROS story map tours usage report for December, 2019 can be seen below:<br>
                             <br>
                             <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>TourTitle</th>
-      <th>TotalViewsSinceCreation</th>
-      <th>December2019Views</th>
+      <th>Tour Title</th>
+      <th>Total Views Since Creation</th>
+      <th>December 2019 Views</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>Green Hills County Park Tour</td>
-      <td>753</td>
+      <td>754</td>
       <td>53</td>
     </tr>
     <tr>
       <td>Historic Oak View County Park Property Tour</td>
-      <td>458</td>
+      <td>459</td>
       <td>57</td>
     </tr>
     <tr>
@@ -45,10 +64,10 @@ Body:
       <td>22</td>
     </tr>
   </tbody>
-</table><br>
+</table>
                             <br>
                             
-                            This is an automated email. Do not reply directly. If you have questions about this email or report, please email Lucas.Piedrahita@wakegov.com or Benjamin.Strauss@wakegov.com.<br>
+                            This is an automated email. Do not reply directly. If you have questions about this email or report, please email Lucas.Piedrahita@wakegov.com.<br>
                             <br>
                             </p>
                         </body>
@@ -57,4 +76,4 @@ Body:
 '''
 End of EMAIL SENT.
 
-Execution of get_pros_story_map_views.py completed at 01/08/2020, 17:16:56
+Execution of get_pros_story_map_views.py completed at 01/09/2020, 10:49:25
